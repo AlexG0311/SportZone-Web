@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* FAB Styles */
+.fab {
+  position: relative;
+  display: inline-block;
+}
+
+.fab > div:first-child:focus ~ div,
+.fab > div:first-child:focus-within ~ div {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fab > div:not(:first-child) {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.fab-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.fab > div:first-child:focus ~ .fab-close,
+.fab > div:first-child:focus-within ~ .fab-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fab > div:first-child:focus,
+.fab > div:first-child:focus-within {
+  opacity: 0;
+}
+

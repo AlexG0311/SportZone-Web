@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+    <script src="mapkick.js"></script>
+    <script>
+    Mapkick.options = {style: "https://demotiles.maplibre.org/style.json"}
+    </script>
+</head>
+<body>
+   <div id="map" style="height: 400px;"></div>
+
+<script>
+  new Mapkick.Map("map", [{latitude: 37.7829, longitude: -122.4190} ])
+</script>
+</body>
+</html>
