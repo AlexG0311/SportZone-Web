@@ -10,15 +10,13 @@ function ImageCard({
   index, 
   isMain,
   onDelete, 
-  onChange,
-  onSetMain
+  onChange
 }: { 
   imagen: Imagen;
   index: number;
   isMain: boolean;
   onDelete: (id: number) => void;
   onChange: (id: number, newUrl: string) => void;
-  onSetMain?: (id: number) => void;
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -44,13 +42,6 @@ function ImageCard({
   const handleDelete = () => {
     if (confirm('¿Estás seguro de eliminar esta imagen?')) {
       onDelete(imagen.id!);
-      setShowMenu(false);
-    }
-  };
-
-  const handleSetAsMain = () => {
-    if (onSetMain) {
-      onSetMain(imagen.id!);
       setShowMenu(false);
     }
   };
@@ -266,39 +257,6 @@ export default function DetailEscenario() {
     } catch (error) {
       console.error('Error:', error);
       alert('Error al actualizar la imagen');
-    }
-  };
-
-  const handleSetAsMain = async (imagenId: number) => {
-    if (!escenario) return;
-
-    try {
-      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}/imagenes/orden`, {
-        method: 'PUT',
-        credentials: 'include'
-      });
-
-      if (!response.ok) throw new Error('Error al establecer imagen principal');
-
-      // Actualizar estado local - cambiar el orden
-      const updatedImagenes = escenario.imagenes.map(img => {
-        if (img.id === imagenId) {
-          return { ...img, orden: 0 };
-        } else if (img.orden === 0) {
-          return { ...img, orden: 1 };
-        }
-        return img;
-      });
-
-      setEscenario({
-        ...escenario,
-        imagenes: updatedImagenes
-      });
-
-      alert('Imagen principal actualizada');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al establecer imagen principal');
     }
   };
 
@@ -525,7 +483,6 @@ export default function DetailEscenario() {
                 isMain={false}
                 onDelete={handleDeleteImage}
                 onChange={handleChangeImage}
-                onSetMain={handleSetAsMain}
               />
             ))}
 

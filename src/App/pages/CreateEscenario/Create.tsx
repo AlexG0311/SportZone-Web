@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { LuCalendar, LuCheck, LuUser, LuWallet, LuImage, LuFileText, LuMapPin } from "react-icons/lu"
+import { LuCheck, LuUser, LuWallet, LuImage, LuFileText, LuMapPin} from "react-icons/lu"
 import { useEscenario } from '../../hooks/useEscenario'
 import Step1 from "./Step1-name"
 import Step2Description from "./Step2-description"
