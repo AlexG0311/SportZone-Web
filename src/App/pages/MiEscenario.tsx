@@ -10,8 +10,8 @@ const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
-    fetch('https://backend-sportzone-production.up.railway.app/api/escenario',
-      {
+    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
+      {                
         method: 'GET', 
         credentials: 'include'
       }

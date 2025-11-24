@@ -2,7 +2,7 @@ import {APIProvider, Map} from '@vis.gl/react-google-maps';
 
 export default function Mapa() {
 
-const API_KEY = 'AIzaSyBIujh25xtRi5la_Xj_D58GAB9NpHkQxFo';
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
      <APIProvider apiKey={API_KEY}>
     <Map

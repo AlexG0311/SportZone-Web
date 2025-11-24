@@ -102,7 +102,7 @@ export default function Detalle() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}`)
+    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setEscenario(data);

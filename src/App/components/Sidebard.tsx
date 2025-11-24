@@ -11,7 +11,7 @@ export default function Sidebard({ onClick }: { onClick: (escenario: Escenario) 
 
   useEffect(() => {
       setLoading(true); // Inicia el loading
-      fetch('https://backend-sportzone-production.up.railway.app/api/escenario',
+      fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
         {
           credentials: 'include',
           method: 'GET',

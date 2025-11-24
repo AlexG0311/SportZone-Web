@@ -11,8 +11,8 @@ const [escenarios, setEscenarios] = useState<Escenario[]>([]);
 const [selectedEscenario, setSelectedEscenario] = useState<Escenario | null>(null);
 
  useEffect(() => {
-    fetch('https://backend-sportzone-production.up.railway.app/api/escenario',
-      {
+    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
+      {               
         method: 'GET', 
         credentials: 'include'
       }

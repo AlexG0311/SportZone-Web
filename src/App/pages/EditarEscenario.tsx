@@ -80,7 +80,7 @@ export default function EditarEscenario() {
       }
 
       try {
-        const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}`, {
+        const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`, {
           credentials: 'include',
         });
 
@@ -181,7 +181,7 @@ export default function EditarEscenario() {
         encargadoId: usuario ? usuario.id : null
       };
 
-      const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

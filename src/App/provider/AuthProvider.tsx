@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('https://backend-sportzone-production.up.railway.app/api/usuario/user', {
-        method: 'GET',
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/usuario/user`, {
+        method: 'GET',                          
         credentials: 'include'
       });
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await fetch('https://backend-sportzone-production.up.railway.app/api/usuario/logout', {
+      await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/usuario/logout`, {
         method: 'POST',
         credentials: 'include'
       });

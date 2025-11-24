@@ -27,7 +27,7 @@ export default function CardEscenario({ escenario }: CardEscenarioProps) {
      setLoading(true);
      
      try {
-       const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${escenario.id}`, {
+       const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${escenario.id}`, {
          method: 'DELETE',
          credentials: 'include',
        });

@@ -56,8 +56,8 @@ export default function MisReservas() {
 
     const fetchReservas = async () => {
       try {
-        const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/reserva/usuario/${usuario.id}`, {
-          credentials: 'include'
+        const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/reserva/usuario/${usuario.id}`, {
+          credentials: 'include'               
         });
 
         if (!response.ok) throw new Error('Error al cargar reservas');
@@ -134,7 +134,7 @@ export default function MisReservas() {
     if (!confirm('¿Estás seguro de cancelar esta reserva?')) return;
 
     try {
-      const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/reserva/${reservaId}/cancelar`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/reserva/${reservaId}/cancelar`, {
         method: 'PUT',
         credentials: 'include'
       });

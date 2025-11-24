@@ -86,7 +86,7 @@ export function EscenarioProvider({ children }: { children: ReactNode }) {
       console.log('Enviando datos al backend:', payload)
 
       // Hacer la petición al backend
-      const response = await fetch('https://backend-sportzone-production.up.railway.app/api/escenario/', {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -196,7 +196,7 @@ export default function DetailEscenario() {
   useEffect(() => {
     const fetchEscenario = async () => {
       try {
-        const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}`, {
+        const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`, {
           credentials: 'include'
         });
 
@@ -219,7 +219,7 @@ export default function DetailEscenario() {
     if (!escenario) return;
 
     try {
-      const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/imagen/${imagenId}`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/imagen/${imagenId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -243,7 +243,7 @@ export default function DetailEscenario() {
     if (!escenario) return;
 
     try {
-      const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/imagen/${imagenId}`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/imagen/${imagenId}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -273,7 +273,7 @@ export default function DetailEscenario() {
     if (!escenario) return;
 
     try {
-      const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}/imagenes/orden`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}/imagenes/orden`, {
         method: 'PUT',
         credentials: 'include'
       });
@@ -318,7 +318,7 @@ export default function DetailEscenario() {
       const nuevoOrden = maxOrden + 1;
 
       // Guardar en base de datos
-      const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}/imagen`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}/imagen`, {
         method: 'POST',
         credentials: 'include',
         headers: {

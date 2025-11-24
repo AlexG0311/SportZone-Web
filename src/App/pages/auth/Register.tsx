@@ -73,7 +73,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://backend-sportzone-production.up.railway.app/api/usuario/", {
+      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/usuario/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
