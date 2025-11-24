@@ -185,16 +185,6 @@ export default function Step5End() {
           ✓ Toda la información parece correcta. Haz clic en <strong>Crear Escenario</strong> para finalizar.
         </p>
       </div>
-
-      {/* Debug info (opcional - quitar en producción) */}
-      {import.meta.env.MODE === 'development' && (
-        <div className="mt-4 p-4 bg-gray-100 rounded-xl">
-          <p className="text-xs font-mono text-gray-600 mb-2">Debug - Datos del Context:</p>
-          <pre className="text-xs overflow-auto max-h-40">
-            {JSON.stringify(escenarioData, null, 2)}
-          </pre>
-        </div>
-      )}
     </div>
   )
 }
