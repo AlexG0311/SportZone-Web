@@ -2,19 +2,7 @@ import NavBar from '../components/NavBar';
 import Sidebard from '../components/Sidebard';
 import MapView from './MapView';
 import { useEffect, useState } from 'react';
-
-interface Escenario {
-  id: number;
-  nombre: string;
-  tipo: string;
-  estadoId: number;
-  imagenUrl: string;
-  descripcion: string;
-  precio: number;
-  direccion: string;
-  latitud: number;
-  longitud: number;
-}
+import type { Escenario } from '../types/escenario';
 
 export default function Home() {
 
@@ -23,7 +11,7 @@ const [escenarios, setEscenarios] = useState<Escenario[]>([]);
 const [selectedEscenario, setSelectedEscenario] = useState<Escenario | null>(null);
 
  useEffect(() => {
-    fetch('http://192.168.100.147:4000/api/escenario',
+    fetch('https://backend-sportzone-production.up.railway.app/api/escenario',
       {
         method: 'GET', 
         credentials: 'include'

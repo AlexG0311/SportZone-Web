@@ -1,17 +1,98 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { Escenario, Imagen } from "../types/escenario";
 
-interface Escenario {
-  id: number;
-  nombre: string;
-  tipo: string;
-  estadoId: number;
-  imagenUrl: string;
-  descripcion: string;
-  precio: number;
-  direccion: string;
-  latitud: number;
-  longitud: number;
+// Componente Carousel
+function ImageCarousel({ imagenes }: { imagenes: Imagen[] }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? imagenes.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === imagenes.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  if (!imagenes || imagenes.length === 0) {
+    return (
+      <div className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
+        <p className="text-gray-500">Sin imágenes disponibles</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Imagen principal con controles */}
+      <div className="relative group bg-black rounded-2xl overflow-hidden">
+        {/* Imagen */}
+        <div className="relative h-96 overflow-hidden">
+          <img
+            src={imagenes[currentIndex].url}
+            alt={imagenes[currentIndex].descripcion}
+            className="w-full h-full object-cover transition-opacity duration-300"
+          />
+        </div>
+
+        {/* Botón Anterior */}
+        <button
+          onClick={goToPrevious}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
+          aria-label="Imagen anterior"
+        >
+          <ChevronLeft className="w-6 h-6 text-gray-800" />
+        </button>
+
+        {/* Botón Siguiente */}
+        <button
+          onClick={goToNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
+          aria-label="Imagen siguiente"
+        >
+          <ChevronRight className="w-6 h-6 text-gray-800" />
+        </button>
+
+        {/* Contador de imágenes */}
+        <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-lg text-sm font-medium">
+          {currentIndex + 1} / {imagenes.length}
+        </div>
+      </div>
+
+      {/* Miniaturas */}
+      <div className="grid grid-cols-5 gap-2">
+        {imagenes.map((imagen, index) => (
+          <button
+            key={imagen.id}
+            onClick={() => goToSlide(index)}
+            className={`relative rounded-lg overflow-hidden transition-all ${
+              index === currentIndex
+                ? 'ring-4 ring-green-500 ring-offset-2'
+                : 'ring-2 ring-gray-200 hover:ring-gray-400'
+            }`}
+          >
+            <img
+              src={imagen.url}
+              alt={imagen.descripcion}
+              className="w-full h-20 object-cover"
+            />
+            {index === currentIndex && (
+              <div className="absolute inset-0 bg-green-500/20" />
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function Detalle() {
@@ -20,9 +101,8 @@ export default function Detalle() {
   const [escenario, setEscenario] = useState<Escenario | null>(null);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
-    fetch(`http://192.168.100.147:4000/api/escenario/${id}`)
+    fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setEscenario(data);
@@ -37,15 +117,21 @@ export default function Detalle() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Cargando...</div>
+        <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!escenario) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Escenario no encontrado</div>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <p className="text-xl text-gray-600">Escenario no encontrado</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+        >
+          Volver
+        </button>
       </div>
     );
   }
@@ -70,28 +156,8 @@ export default function Detalle() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Sección de imágenes - Izquierda */}
-          <div className="space-y-4">
-            {/* Imagen principal */}
-            <div className="rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src={escenario.imagenUrl}
-                alt={escenario.nombre}
-                className="w-full h-[400px] object-cover"
-              />
-            </div>
-
-            {/* Galería de miniaturas (puedes agregar más imágenes si las tienes) */}
-            <div className="grid grid-cols-4 gap-2">
-              {[1, 2, 3, 4,5].map((i) => (
-                <div key={i} className="rounded-lg overflow-hidden shadow">
-                  <img
-                    src={escenario.imagenUrl}
-                    alt={`Vista ${i}`}
-                    className="w-full h-20 object-cover cursor-pointer hover:opacity-75 transition-opacity"
-                  />
-                </div>
-              ))}
-            </div>
+          <div>
+            <ImageCarousel imagenes={escenario.imagenes} />
           </div>
 
           {/* Información del escenario - Derecha */}
@@ -106,25 +172,41 @@ export default function Detalle() {
                   className={`px-4 py-2 text-sm font-semibold rounded-full ${
                     escenario.estadoId === 1
                       ? 'bg-green-100 text-green-700'
+                      : escenario.estadoId === 3
+                      ? 'bg-yellow-100 text-yellow-700'
                       : 'bg-red-100 text-red-700'
                   }`}
                 >
-                  {escenario.estadoId === 1 ? 'Disponible' : 'Ocupado'}
+                  {escenario.estado.nombre}
                 </span>
               </div>
-              <p className="text-lg text-gray-600">{escenario.tipo}</p>
+              <span className={`inline-block px-3 py-1 text-sm font-semibold rounded-lg ${
+                escenario.tipo === 'Público' 
+                  ? 'bg-green-100 text-green-700' 
+                  : 'bg-orange-100 text-orange-700'
+              }`}>
+                {escenario.tipo}
+              </span>
             </div>
-          {escenario.tipo === 'Privado' && (
-            <div className="border-t border-b border-gray-200 py-6">
-              <div className="flex items-baseline justify-between">
-                <span className="text-gray-600 text-lg">Precio:</span>
-                <span className="text-4xl font-bold text-green-600">
-                  ${escenario.precio}
-                </span>
+
+            {/* Precio y Capacidad */}
+            <div className="grid grid-cols-2 gap-4">
+              {escenario.tipo === 'Privado' && (
+                <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                  <p className="text-sm font-medium text-green-700 uppercase mb-1">Precio/hora</p>
+                  <p className="text-2xl font-bold text-green-900">
+                    ${parseFloat(escenario.precio).toLocaleString('es-CO')}
+                  </p>
+                </div>
+              )}
+              
+              <div className="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                <p className="text-sm font-medium text-purple-700 uppercase mb-1">Capacidad</p>
+                <p className="text-2xl font-bold text-purple-900">
+                  {escenario.capacidad} personas
+                </p>
               </div>
             </div>
-            )}
-            
 
             {/* Descripción */}
             <div>
@@ -150,16 +232,24 @@ export default function Detalle() {
               </div>
             </div>
 
+            {/* Encargado */}
+            <div className="pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-500">Encargado</p>
+              <p className="font-semibold text-gray-900">{escenario.encargado.nombre}</p>
+              <p className="text-sm text-gray-600">{escenario.encargado.email}</p>
+            </div>
+
             {/* Botones de acción */}
             <div className="pt-6 space-y-3">
-           {escenario.tipo === 'Privado' && (
-              <button
-                onClick={() => {navigate(`/reservar/${escenario.id}`)}}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors shadow-lg hover:shadow-xl"
-                disabled={escenario.estadoId !== 1}
-              >
-                {escenario.estadoId === 1 ? 'Reservar Ahora' : 'No Disponible'}
-              </button> )}
+              {escenario.tipo === 'Privado' && (
+                <button
+                  onClick={() => {navigate(`/reservar/${escenario.id}`)}}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors shadow-lg hover:shadow-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
+                 
+                >
+                 Reservar Ahora
+                </button>
+              )}
               
               <div className="flex gap-3">
                 <button className="flex-1 border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-colors flex items-center justify-center">

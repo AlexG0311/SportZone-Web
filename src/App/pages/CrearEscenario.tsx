@@ -124,7 +124,7 @@ const { usuario } = useAuth();
 
       console.log('📤 Payload enviado:', payload); // Debug
 
-      const response = await fetch('http://192.168.100.147:4000/api/escenario', {
+      const response = await fetch('https://backend-sportzone-production.up.railway.app/api/escenario', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,16 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface Escenario {
-  id: number;
-  nombre: string;
-  tipo: string;
-  estadoId: number;
-  imagenUrl: string;
-  descripcion: string;
-  precio: number;
-  direccion: string;
-}
+import  type { Escenario } from '../types/escenario';
+import { getImagenPrincipal } from '../types/escenario';
 
 interface CardEscenarioProps {
   escenario: Escenario;
@@ -36,7 +27,7 @@ export default function CardEscenario({ escenario }: CardEscenarioProps) {
      setLoading(true);
      
      try {
-       const response = await fetch(`http://192.168.100.147:4000/api/escenario/${escenario.id}`, {
+       const response = await fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${escenario.id}`, {
          method: 'DELETE',
          credentials: 'include',
        });
@@ -71,7 +62,7 @@ export default function CardEscenario({ escenario }: CardEscenarioProps) {
       {/* Imagen con efecto de opacidad */}
       <div className="relative h-54 w-100 overflow-hidden">
         <img
-          src={escenario.imagenUrl}
+          src={getImagenPrincipal(escenario.imagenes)}
           alt={escenario.nombre}
           className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-75"
         />
@@ -80,7 +71,7 @@ export default function CardEscenario({ escenario }: CardEscenarioProps) {
       {/* Contenido */}
       <div className="p-6">
         {/* Título */}
-        <a href={`panel-control/${escenario.id}`} className="text-xl font-bold text-gray-900 mb-2 underline hover:text-green-600 transition-colors">
+        <a href={`/detalle-escenario/${escenario.id}`} className="text-xl font-bold text-gray-900 mb-2 underline hover:text-green-600 transition-colors">
           {escenario.nombre}
         </a>
 

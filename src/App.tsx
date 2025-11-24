@@ -5,10 +5,13 @@ import './App.css';
 import Detalle from './App/pages/Detalle.tsx';
 import Reservar from './App/pages/Reservar.tsx';
 import MiEscenario from './App/pages/MiEscenario.tsx';
-import CrearScenario from './App/pages/CrearEscenario.tsx';
 import EditarEscenario from './App/pages/EditarEscenario.tsx';
 import PanelControl from './App/pages/PanelControl.tsx';
-
+import Create from './App/pages/CreateEscenario/Create.tsx';
+import { EscenarioProvider } from './App/provider/EscenarioProvider.tsx';
+import DetailEscenario from './App/pages/DetailEscenario.tsx';
+import MisReservas from './App/pages/Mis-Reservas.tsx';
+import Register from './App/pages/auth/Register.tsx';
 export default function App() {
   
   return (
@@ -16,15 +19,22 @@ export default function App() {
 
       <Route path="/" element={<Navigate to="/Login" />} />
       <Route path="/Login" element={<Login />} />
-     
+      <Route path="/registro" element={<Register />} />
+      <Route path="/create-account" element={<Create />} />
       <Route path="/Home" element={<Home />} />
       <Route path="/detalle/:id" element={<Detalle />} />
       <Route path="/reservar/:id" element={<Reservar />} />
       <Route path="/mi-escenario" element={<MiEscenario />} />
-      <Route path="/crear-escenario" element={<CrearScenario />} />
+
+      <Route path="/crear-escenario" element={
+        <EscenarioProvider>
+          <Create />
+        </EscenarioProvider>
+      } />
       <Route path="/editar-escenario/:id" element={<EditarEscenario />} />
       <Route path="/panel-control/:id" element={<PanelControl />} />
-    
+      <Route path="/detalle-escenario/:id" element={<DetailEscenario />} />
+      <Route path="/mis-reservas" element={<MisReservas />} />
     </Routes>
 
   );

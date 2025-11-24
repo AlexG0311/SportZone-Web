@@ -4,9 +4,10 @@ export const ReservarEscenario = async (data: {
   horaFin: string;
   escenarioId: number;
   usuarioId: number;
+  estadoId?: number;
 }) => {
   try {
-    const response = await fetch('http://192.168.100.147:4000/api/reserva', {
+    const response = await fetch('https://backend-sportzone-production.up.railway.app/api/reserva', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

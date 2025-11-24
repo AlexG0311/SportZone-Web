@@ -40,7 +40,7 @@
 
     // make displayable and center vertically
     svg.removeAttribute("display");
-    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svg.setAttribute("xmlns", "https://www.w3.org/2000/svg");
     svg.setAttribute("height", height);
     svg.setAttribute("width", width);
     svg.setAttribute("viewBox", ("0 0 " + width + " " + height));
@@ -95,7 +95,7 @@
     }
 
     function getJSON(element, url, success) {
-      var xhr = new XMLHttpRequest();
+      var xhr = new XMLHttpsRequest();
       xhr.open("GET", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onload = function () {

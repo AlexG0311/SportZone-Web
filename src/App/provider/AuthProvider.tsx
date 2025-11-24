@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://192.168.100.147:4000/api/usuario/user', {
+      const response = await fetch('https://backend-sportzone-production.up.railway.app/api/usuario/user', {
         method: 'GET',
         credentials: 'include'
       });
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await fetch('http://192.168.100.147:4000/api/usuario/logout', {
+      await fetch('https://backend-sportzone-production.up.railway.app/api/usuario/logout', {
         method: 'POST',
         credentials: 'include'
       });

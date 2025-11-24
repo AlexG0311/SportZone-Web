@@ -30,7 +30,7 @@ export default function Reservar() {
   
   // Traer información del escenario
   useEffect(() => {
-    fetch(`http://192.168.100.147:4000/api/escenario/${id}`)
+    fetch(`https://backend-sportzone-production.up.railway.app/api/escenario/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setEscenario(data);
@@ -87,7 +87,8 @@ export default function Reservar() {
         horaInicio: horaInicio,
         horaFin: horaFin,
         escenarioId: parseInt(id),
-        usuarioId: usuario.id 
+        usuarioId: usuario.id,
+        estadoId: 4 // Asignar estado "Pendiente" por defecto
       };
 
       console.log('Datos de reserva:', reservaData);
@@ -157,7 +158,7 @@ export default function Reservar() {
         </div>
 
         {/* Formulario */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 space-y-6">
+        <div className="bg-gray-100 rounded-2xl shadow-sm p-8 space-y-6">
           
           {/* Fecha */}
           <div>
@@ -170,7 +171,7 @@ export default function Reservar() {
               value={fechaSeleccionada}
               onChange={(e) => setFechaSeleccionada(e.target.value)}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-700"
+              className="w-full px-4 py-3 border border-gray-300 bg-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-700"
             />
           </div>
 
@@ -184,7 +185,7 @@ export default function Reservar() {
                 type="time"
                 value={horaInicio}
                 onChange={(e) => setHoraInicio(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-700"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-700"
               />
             </div>
             
@@ -196,7 +197,7 @@ export default function Reservar() {
                 type="time"
                 value={horaFin}
                 onChange={(e) => setHoraFin(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-700"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-gray-700"
               />
             </div>
           </div>

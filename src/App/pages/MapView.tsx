@@ -7,19 +7,7 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect } from 'react';
-
-interface Escenario {
-  id: number;
-  nombre: string;
-  tipo: string;
-  estadoId: number;
-  imagenUrl: string;
-  descripcion: string;
-  precio: number;
-  direccion: string;
-  latitud: number;
-  longitud: number;
-}
+import type { Escenario } from '../types/escenario';
 
 interface MapViewProps {
   escenarios: Escenario[];

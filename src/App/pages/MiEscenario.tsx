@@ -2,27 +2,15 @@ import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import CardEscenario from "../components/CardEscenario";
+import { type Escenario } from "../types/escenario";
 export default function MiEscenario() {
-
-interface Escenario {
-  id: number;
-  nombre: string;
-  tipo: string;
-  estadoId: number;
-  imagenUrl: string;
-  descripcion: string;
-  precio: number;
-  direccion: string;
-  latitud: number;
-  longitud: number;
-}
 
 const [escenarios, setEscenarios] = useState<Escenario[]>([]);
 const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
-    fetch('http://192.168.100.147:4000/api/escenario',
+    fetch('https://backend-sportzone-production.up.railway.app/api/escenario',
       {
         method: 'GET', 
         credentials: 'include'
