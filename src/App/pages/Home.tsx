@@ -7,8 +7,8 @@ import type { Escenario } from '../types/escenario';
 export default function Home() {
 
 const [escenarios, setEscenarios] = useState<Escenario[]>([]); 
-
 const [selectedEscenario, setSelectedEscenario] = useState<Escenario | null>(null);
+const [showMap, setShowMap] = useState(false);
 
  useEffect(() => {
     fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
@@ -26,25 +26,47 @@ const [selectedEscenario, setSelectedEscenario] = useState<Escenario | null>(nul
 
  const handleEscenarioClick = (escenario: Escenario) => {
     setSelectedEscenario(escenario);
+    setShowMap(true);
   };  
 
     return (
         <div className="h-screen bg-gray-50 flex flex-col">
             <NavBar />
 
-            {/* Content area: keep everything inside to prevent overflow */}
-            <div className="flex flex-1 overflow-hidden">
-                <Sidebard 
-                onClick={handleEscenarioClick} />
-                {/* Main: takes remaining space, hides overflow so map never exceeds viewport */}
-                <main className="flex-1 p-6 overflow-hidden">
-                  <div className="h-full w-full rounded-lg overflow-hidden shadow-sm">
-                    <MapView 
-                      escenarios={escenarios} 
-                      selectedEscenario={selectedEscenario}
-                    />
-                  </div>
-                </main>
+            <div className="flex flex-1 overflow-hidden md:flex-row relative">
+                {/* Sidebar - En móvil se oculta completamente cuando showMap es true */}
+                <div className={`transition-all duration-500 ${
+                  showMap 
+                    ? 'hidden md:block md:w-1/2' 
+                    : 'w-full'
+                }`}>
+                    <Sidebard onClick={handleEscenarioClick} showMap={showMap} />
+                </div>
+
+                {/* Mapa - En móvil ocupa toda la pantalla con posición absoluta */}
+                {showMap && (
+                    <div className="fixed md:relative inset-0 md:inset-auto md:w-1/2 z-50 md:z-auto">
+                        <div className="h-full w-full md:p-4">
+                            <div className="h-full w-full md:rounded-lg overflow-hidden md:shadow-lg">
+                                <MapView 
+                                    escenarios={escenarios} 
+                                    selectedEscenario={selectedEscenario}
+                                />
+                            </div>
+
+                            {/* Botón para cerrar el mapa */}
+                            <button
+                                onClick={() => setShowMap(false)}
+                                className="absolute top-4 right-4 z-[1000] bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
+                                title="Cerrar mapa"
+                            >
+                                <svg className="w-5 h-5 text-gray-700 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );  

@@ -127,7 +127,7 @@ export default function Detalle() {
       <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <p className="text-xl text-gray-600">Escenario no encontrado</p>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
           className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
         >
           Volver
@@ -142,7 +142,7 @@ export default function Detalle() {
       <div className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
           >
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
