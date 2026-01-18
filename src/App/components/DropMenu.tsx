@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useNavigate } from "react-router-dom"
+import { supabaseCliente  } from "../pages/supabase/clienteSupabase.ts";
+
 
 export function DropdownMenuDemo() {
   const navigate = useNavigate();
@@ -43,7 +45,9 @@ export function DropdownMenuDemo() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={async () => {
+          await supabaseCliente.auth.signOut();
+        }}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
