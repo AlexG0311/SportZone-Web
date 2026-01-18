@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import type { EscenarioData } from '../context/EscenarioContext'
 import { EscenarioContext } from '../context/EscenarioContext'
-
+import { useAuth } from '../hooks/useAuth'
 
 const initialData: EscenarioData = {
   nombre: "",
@@ -20,7 +20,7 @@ const initialData: EscenarioData = {
 
 export function EscenarioProvider({ children }: { children: ReactNode }) {
   const [escenarioData, setEscenarioData] = useState<EscenarioData>(initialData)
-
+  const { usuario } = useAuth()
   const updateField = <K extends keyof EscenarioData>(
     field: K, 
     value: EscenarioData[K]
@@ -79,7 +79,7 @@ export function EscenarioProvider({ children }: { children: ReactNode }) {
         latitud: escenarioData.ubicacion.latitud,
         longitud: escenarioData.ubicacion.longitud,
         estadoId: 3, // Estado "pendiente" o el que corresponda
-        encargadoId: 3, // ID del usuario logueado (deberías obtenerlo del AuthContext)
+        encargadoId: usuario?.id, // ID del usuario logueado (deberías obtenerlo del AuthContext)
         imagenes: imagenes
       }
 
