@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import CardEscenario from "../components/CardEscenario";
 import { type Escenario } from "../types/escenario";
+import { useAuth } from "../hooks/useAuth";
 export default function MiEscenario() {
-
+const { usuario } = useAuth();
 const [escenarios, setEscenarios] = useState<Escenario[]>([]);
 const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
-    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
+    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/usuario/${usuario?.id}`,
       {                
         method: 'GET', 
         credentials: 'include'
