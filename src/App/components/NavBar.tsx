@@ -1,14 +1,10 @@
 import { DropdownMenuDemo } from "./DropMenu"; 
 import { useAuth } from "../hooks/useAuth";
+import { ServicioClientSupabase } from '../hooks/ServicioClientSupabase.ts';
 
 export default function NavBar() {
-  const { usuario, isAuthenticated, loading } = useAuth();
-
-  console.log('NavBar - isAuthenticated:', isAuthenticated);
-  console.log('NavBar - usuario:', usuario);
-  console.log('NavBar - loading:', loading);
-
-  
+const { isAuthenticated } = useAuth();
+const { session } = ServicioClientSupabase();
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-[1000]">
@@ -29,7 +25,7 @@ export default function NavBar() {
           {/* User Actions */}
           <div className="flex items-center space-x-4">
             {/* Si NO está autenticado */}
-            {!isAuthenticated ? (
+            {!isAuthenticated && !session ? (
               <>
                 <a href="/login" className="text-gray-800 hover:text-gray-600 font-medium transition-colors">
                   Login
