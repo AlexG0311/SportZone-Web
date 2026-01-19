@@ -57,6 +57,12 @@ export function DropdownMenuDemo() {
           }
           // Finalmente, hacer signOut de Supabase
           await supabaseCliente.auth.signOut(); 
+          console.log('Usuario deslogueado de Supabase');
+          
+          // Refrescar la página
+          window.location.href = '/Home';
+          // O si quieres solo recargar sin navegar:
+          // window.location.reload();
         }}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
