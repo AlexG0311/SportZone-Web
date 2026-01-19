@@ -48,7 +48,7 @@ export function DropdownMenuDemo() {
         <DropdownMenuItem onClick={async () => {
           try {
             // Petición al backend para eliminar el token de la cookie
-            await fetch(`https://${import.meta.env.VITE_SERVER_IP}/usuario/logout`, {
+            await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/usuario/logout`, {
               method: 'POST',
               credentials: 'include', // Envía las cookies con la petición
             });
@@ -56,7 +56,7 @@ export function DropdownMenuDemo() {
             console.error('Error al hacer logout en el backend:', error);
           }
           // Finalmente, hacer signOut de Supabase
-          await supabaseCliente.auth.signOut();
+          await supabaseCliente.auth.signOut(); 
         }}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
