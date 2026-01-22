@@ -12,6 +12,11 @@ import { EscenarioProvider } from './App/provider/EscenarioProvider.tsx';
 import DetailEscenario from './App/pages/DetailEscenario.tsx';
 import MisReservas from './App/pages/Mis-Reservas.tsx';
 import Register from './App/pages/auth/Register.tsx';
+import {RevisionEscenarios} from './App/pages/admin/RevisionEscenarios.tsx';
+import { GestionEscenarios } from './App/pages/admin/GestionEscenarios.tsx';
+import {PerfilAdmin} from './App/pages/admin/PerfilAdmin.tsx';
+import {GestionUsuarios} from './App/pages/admin/GestionUsuarios.tsx';
+import { Dashboard } from './App/pages/admin/Dashboard.tsx';
 export default function App() {
   
   return (
@@ -35,6 +40,13 @@ export default function App() {
       <Route path="/panel-control/:id" element={<PanelControl />} />
       <Route path="/detalle-escenario/:id" element={<DetailEscenario />} />
       <Route path="/mis-reservas" element={<MisReservas />} />
+      <Route path="/admin/dashboard" element={<Dashboard />} />
+      <Route path="*" element={<h1>404 Not Found</h1>} />
+      <Route path="/admin/revision-escenarios" element={<RevisionEscenarios />} />
+      <Route path="/admin/gestion-escenarios" element={<GestionEscenarios />} />
+      <Route path="/admin/perfil-admin" element={<PerfilAdmin />} />
+      <Route path="/admin/gestion-usuarios" element={<GestionUsuarios />} />
+
     </Routes>
 
   );
