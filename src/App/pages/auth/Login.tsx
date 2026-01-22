@@ -78,8 +78,12 @@ useEffect(() => {
         setError(data.error || 'Error al iniciar sesión');
         return;
       }
-
       console.log('Login response data:', data);
+      if(data.rolId === 1){
+        navigate('/admin/dashboard');
+        return;
+      }
+ 
       navigate('/Home');
       
     } catch (err) {
