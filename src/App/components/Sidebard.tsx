@@ -1,43 +1,16 @@
-import { useState, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import type { Escenario, Imagen } from '../types/escenario';
 import ImagenDefault from '../pages/image/ImagenDefault.png';
+import { useFiltroEscenario } from '../hooks/useFiltroEscenario';
 
 interface SidebardProps {
   onClick: (escenario: Escenario) => void;
   showMap?: boolean;
 }
-
 export default function Sidebard({ onClick, showMap = false }: SidebardProps) {
-  
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [escenarios, setEscenarios] = useState<Escenario[]>([]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
-      {
-        credentials: 'include',
-        method: 'GET',
-      }
-    )
-      .then(response => response.json())
-      .then(data => {
-        setEscenarios(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching escenarios:', error);
-        setLoading(false);
-      });
-  }, []); 
-
-  const [busqueda, setBusqueda] = useState('');
-  const escenariosFiltrados = escenarios.filter(escenario =>
-    escenario.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    escenario.tipo.toLowerCase().includes(busqueda.toLowerCase())
-  );
+const navigate = useNavigate();
+ const { loading, escenarios, escenariosFiltrados, busqueda, setBusqueda } = useFiltroEscenario();
 
   const detalle = (id: number) => {
     navigate(`/detalle/${id}`)  
@@ -49,7 +22,6 @@ export default function Sidebard({ onClick, showMap = false }: SidebardProps) {
     }
     return ImagenDefault; 
   } 
-
   return (
     <div className="w-full bg-white h-screen flex flex-col">
       {/* Header compacto y responsive */}
@@ -126,15 +98,7 @@ export default function Sidebard({ onClick, showMap = false }: SidebardProps) {
                     alt={escenario.nombre} 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute top-2 md:top-3 right-2 md:right-3">
-                    <span className={`px-2 md:px-3 py-1 text-xs font-semibold rounded-full shadow-lg ${
-                      escenario.estadoId === 3
-                        ? 'bg-green-500 text-white'
-                        : 'bg-red-500 text-white'
-                    }`}>
-                      {escenario.estadoId === 3 ? '✓ Disponible' : '✕ Ocupado'}
-                    </span>
-                  </div>
+            
                   <div className="absolute top-2 md:top-3 left-2 md:left-3">
                     <span className={`px-2 md:px-3 py-1 text-xs font-semibold rounded-full shadow-lg ${
                       escenario.tipo === "Público" ? 'bg-green-700 text-white' : 'bg-orange-600 text-white'
