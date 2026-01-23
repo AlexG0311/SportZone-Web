@@ -87,7 +87,7 @@ export const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                  <Home className="w-6 h-6 text-white" />
+                  <Home onClick={() => window.location.href="/admin/dashboard"} className="w-6 h-6 cursor-pointer text-white" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-gray-800">SportZone</h1>
@@ -108,7 +108,6 @@ export const Dashboard = () => {
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = selectedMenu === item.id;
-              
               return (
                 <button
                   key={item.id}

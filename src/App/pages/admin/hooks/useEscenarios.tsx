@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Escenario } from '../../../types/escenario';
 
 export function useEscenarios() {
@@ -6,7 +6,7 @@ export function useEscenarios() {
   const [escenarios, setEscenarios] = useState<Escenario[]>([]);
   const [busqueda, setBusqueda] = useState('');
 
-  useEffect(() => {
+  const fetchEscenarios = useCallback(() => {
     setLoading(true);
     fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`, {
       credentials: 'include',
@@ -27,6 +27,10 @@ export function useEscenarios() {
       });
   }, []);
 
+  useEffect(() => {
+    fetchEscenarios();
+  }, [fetchEscenarios]);
+
   const escenariosFiltrados = escenarios.filter(escenario =>
     escenario.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
     escenario.tipo.toLowerCase().includes(busqueda.toLowerCase())
@@ -37,6 +41,7 @@ export function useEscenarios() {
     escenarios,
     escenariosFiltrados,
     busqueda,
-    setBusqueda
+    setBusqueda,
+    refetch: fetchEscenarios
   };
 }

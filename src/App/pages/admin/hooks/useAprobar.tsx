@@ -19,7 +19,7 @@ const aprobarEscenario = async (escenarioId: number) => {
       headers: {
         'Content-type': 'Application/json'
       },
-      body: JSON.stringify({estado: 4}),
+      body: JSON.stringify({estadoId: 4}),
       credentials: 'include',
     });
     if (!response.ok) {
@@ -45,7 +45,7 @@ const rechazarEscenario = async (escenarioId: number) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ estado: 5 }),
+        body: JSON.stringify({ estadoId: 5 }),
         credentials: 'include',
         });
     if (!response.ok) {
