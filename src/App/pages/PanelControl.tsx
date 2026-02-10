@@ -10,7 +10,6 @@ export default function PanelControl() {
 
   return (
     <div className="bg-white min-h-screen">
-      <NavBar />
       <main className="p-6 bg-gray-100 rounded-lg min-h-screen shadow-md ml-6 mr-6">
         <header>
         <h1 className="text-2xl font-bold mb-4">Panel de Control</h1>

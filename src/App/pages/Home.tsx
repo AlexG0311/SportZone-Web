@@ -1,28 +1,14 @@
-import NavBar from '../components/NavBar';
 import Sidebard from '../components/Sidebard';
 import MapView from './MapView';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Escenario } from '../types/escenario';
+import { useEscenariosAprobados } from '../hooks/useEscenariosAprobados';
 
 export default function Home() {
-
-const [escenarios, setEscenarios] = useState<Escenario[]>([]); 
 const [selectedEscenario, setSelectedEscenario] = useState<Escenario | null>(null);
 const [showMap, setShowMap] = useState(false);
+const {escenarios} = useEscenariosAprobados();
 
- useEffect(() => {
-    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario`,
-      {               
-        method: 'GET', 
-        credentials: 'include'
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setEscenarios(data);
-      })
-      .catch(error => console.error('Error fetching escenarios:', error));
-  }, []);
 
  const handleEscenarioClick = (escenario: Escenario) => {
     setSelectedEscenario(escenario);
@@ -31,8 +17,6 @@ const [showMap, setShowMap] = useState(false);
 
     return (
         <div className="h-screen bg-gray-50 flex flex-col">
-            <NavBar />
-
             <div className="flex flex-1 overflow-hidden md:flex-row relative">
                 {/* Sidebar - En móvil se oculta completamente cuando showMap es true */}
                 <div className={`transition-all duration-500 ${

@@ -1,9 +1,6 @@
 "use client"
-
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
-
-
 import {
   Card,
   CardContent,
@@ -17,14 +14,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-
 import type { ChartConfig } from "@/components/ui/chart"
 
 
 export const description = "A bar chart with a label"
-
-
-
 
 const chartDataDay = [
   { month: "Lunes", desktop: 186 },
@@ -45,8 +38,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartDays() {
-
- 
 
 
   return (

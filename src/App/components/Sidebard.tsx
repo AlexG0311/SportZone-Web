@@ -2,7 +2,8 @@
 import { useNavigate } from 'react-router-dom';
 import type { Escenario, Imagen } from '../types/escenario';
 import ImagenDefault from '../pages/image/ImagenDefault.png';
-import { useFiltroEscenario } from '../hooks/useFiltroEscenario';
+import { useEscenariosAprobados } from '../hooks/useEscenariosAprobados';
+import { useFiltroEscenario } from '../hooks/useFiltroEscenarios';
 
 interface SidebardProps {
   onClick: (escenario: Escenario) => void;
@@ -10,7 +11,9 @@ interface SidebardProps {
 }
 export default function Sidebard({ onClick, showMap = false }: SidebardProps) {
 const navigate = useNavigate();
- const { loading, escenarios, escenariosFiltrados, busqueda, setBusqueda } = useFiltroEscenario();
+
+ const { loading, escenarios } = useEscenariosAprobados();
+ const {escenariosFiltrados, busqueda, setBusqueda} = useFiltroEscenario();
 
   const detalle = (id: number) => {
     navigate(`/detalle/${id}`)  

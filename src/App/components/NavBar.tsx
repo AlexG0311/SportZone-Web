@@ -27,10 +27,10 @@ const { session } = ServicioClientSupabase();
             {/* Si NO está autenticado */}
             {!isAuthenticated && !session ? (
               <>
-                <a href="/login" className="text-gray-800 hover:text-gray-600 font-medium transition-colors">
+                <a href="/auth/login" className="text-gray-800 hover:text-gray-600 font-medium transition-colors">
                   Login
                 </a>
-                <a href="/register" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors">
+                <a href="/auth/register" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium transition-colors">
                   Registrarse
                 </a>
               </>

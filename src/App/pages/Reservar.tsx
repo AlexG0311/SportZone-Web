@@ -1,125 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ReservarEscenario } from '../services/ReservarEscenario';
-import { useAuth } from '../hooks/useAuth';
-
-interface Escenario {
-  id: number;
-  nombre: string;
-  tipo: string;
-  estadoId: number;
-  imagenUrl: string;
-  descripcion: string;
-  precio: number;
-  direccion: string;
-  latitud: number;
-  longitud: number;
-}
+import { useGetEscenarioById } from '../hooks/useGetEscenarioById';
+import { calcularHoras } from '../utils/calcularHoras';
+import { useHandleReserva } from '../hooks/useHandleReserva';
 
 export default function Reservar() {
+  
+  const {handleReservar} = useHandleReserva();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { usuario } = useAuth();
-
-
   const [fechaSeleccionada, setFechaSeleccionada] = useState('');
   const [horaInicio, setHoraInicio] = useState('');
   const [horaFin, setHoraFin] = useState('');
-  const [escenario, setEscenario] = useState<Escenario | null>(null);
-  const [loading, setLoading] = useState(true);
-  
-  // Traer información del escenario
-  useEffect(() => {
-    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setEscenario(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching escenario:', error);
-        setLoading(false);
-      });
-  }, [id]);
-  
+  const {escenario, loading} = useGetEscenarioById(id);
+ 
   // Precio por hora del escenario
-  const precioPorHora = escenario?.precio || 0;
-  
-  // Calcular horas y precio total
-  const calcularHoras = () => {
-    if (!horaInicio || !horaFin) return 0;
-    
-    const [horaIni, minIni] = horaInicio.split(':').map(Number);
-    const [horaFi, minFi] = horaFin.split(':').map(Number);
-    
-    const minutosInicio = horaIni * 60 + minIni;
-    const minutosFin = horaFi * 60 + minFi;
-    
-    const diferenciaMinutos = minutosFin - minutosInicio;
-    return Math.max(0, diferenciaMinutos / 60);
-  };
-  
-  const horasTotales = calcularHoras();
+  const precioPorHora = Number(escenario?.precio || 0);
+  const horasTotales = calcularHoras({horaInicio,horaFin});
   const precioTotal = horasTotales * precioPorHora;
-  
-  const handleReservar = async () => {
-    
-    try {
-      if(id === undefined) {
-        alert('Error: ID del escenario no definido');
-        return;
-      }
 
-      if (!usuario) {
-        alert('Error: Usuario no autenticado');
-        navigate('/login');
-        return;
-      }
-
-      // Validar duración mínima (por ejemplo, 30 minutos)
-      if (horasTotales < 0.5) {
-        alert('La duración mínima de la reserva es de 30 minutos.');
-        return;
-      }
-
-      const reservaData = {
-        fecha: fechaSeleccionada,
-        horaInicio: horaInicio,
-        horaFin: horaFin,
-        escenarioId: parseInt(id),
-        usuarioId: usuario.id,
-        estadoId: 4 // Asignar estado "Pendiente" por defecto
-      };
-
-      console.log('Datos de reserva:', reservaData);
-
-      const res = await ReservarEscenario(reservaData);
-
-      console.log('Respuesta completa:', res);
-
-      // ✅ Verificar si la respuesta es exitosa
-      if (res.ok) {
-        console.log('Reserva exitosa');
-        alert(
-          `¡Reserva exitosa!\n\n` +
-          `Detalles de la reserva:\n` +
-          `Escenario: ${escenario?.nombre}\n` +
-          `Fecha: ${fechaSeleccionada}\n` +
-          `Hora de inicio: ${horaInicio}\n` +
-          `Hora de fin: ${horaFin}\n` +
-          `Total a pagar: $${precioTotal.toLocaleString()}`
-        );
-        navigate('/mis-reservas');
-      } else {
-        // Si la API devuelve un error específico
-        alert(`Error: ${res.error}`);
-      }
-
-    } catch (error) {
-      console.error('Error al realizar la reserva:', error);
-      alert('Error al realizar la reserva. Por favor, intenta de nuevo.');
-    }
-  };
 
   if (loading) {
     return (
@@ -232,7 +131,7 @@ export default function Reservar() {
 
           {/* Botón de reservar */}
           <button
-            onClick={handleReservar}
+            onClick={() => handleReservar({ id, fechaSeleccionada, horaInicio, horaFin, horasTotales, precioTotal, escenario })}
             disabled={!fechaSeleccionada || !horaInicio || !horaFin || horasTotales <= 0}
             className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-colors shadow-lg hover:shadow-xl"
           >

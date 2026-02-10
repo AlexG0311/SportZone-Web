@@ -68,7 +68,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth
   };
 
- // ✅ Mostrar loading mientras verifica la sesión
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">

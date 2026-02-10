@@ -1,32 +1,10 @@
-import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react";
 import CardEscenario from "../components/CardEscenario";
-import { type Escenario } from "../types/escenario";
-import { useAuth } from "../hooks/useAuth";
+import { useGetEscenarioUser } from "../hooks/useGetEscenarioUser";
 export default function MiEscenario() {
-const { usuario } = useAuth();
-const [escenarios, setEscenarios] = useState<Escenario[]>([]);
-const [loading, setLoading] = useState(true);
 
-
-  useEffect(() => {
-    fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/usuario/${usuario?.id}`,
-      {                
-        method: 'GET', 
-        credentials: 'include'
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setEscenarios(data);
-        setLoading(false);
-      })
-      .catch(error => console.error('Error fetching escenarios:', error));
-  }, []);
-
-
-  const navigate = useNavigate();
+const {loading, escenarios} = useGetEscenarioUser();
+const navigate = useNavigate();
 
   if(loading){
     return (
@@ -38,11 +16,9 @@ const [loading, setLoading] = useState(true);
       </div>
     );
   }
-
+  
   return (
-
     <div className="h-full bg-gray-50 flex flex-col">
-      <NavBar />
         <div className="flex  mx-auto  w-full  justify-between items-center px-30 py-4">
           <h1 className="font-bold text-3xl">Mis Escenarios</h1>
           <button

@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import type { Escenario } from '../types/escenario';
 
-export function useFiltroEscenario() {
+export function useEscenariosAprobados() {
   const [loading, setLoading] = useState(true);
   const [escenarios, setEscenarios] = useState<Escenario[]>([]);
-  const [busqueda, setBusqueda] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -27,16 +26,8 @@ export function useFiltroEscenario() {
       });
   }, []);
 
-  const escenariosFiltrados = escenarios.filter(escenario =>
-    escenario.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    escenario.tipo.toLowerCase().includes(busqueda.toLowerCase())
-  );
-
   return {
     loading,
     escenarios,
-    escenariosFiltrados,
-    busqueda,
-    setBusqueda
   };
 }

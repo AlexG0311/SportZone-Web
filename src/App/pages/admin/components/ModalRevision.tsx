@@ -1,5 +1,3 @@
-
-
 interface ModalRevisionProps {
   isOpen: boolean;
   onClose: () => void;
