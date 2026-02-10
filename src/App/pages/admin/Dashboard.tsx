@@ -9,14 +9,14 @@ import {
   Menu,
   X 
 } from 'lucide-react';
-import { RevisionEscenarios } from './RevisionEscenarios.tsx';
-import { GestionEscenarios } from './GestionEscenarios.tsx';
-import { PerfilAdmin } from './PerfilAdmin.tsx';
-import { GestionUsuarios } from './GestionUsuarios.tsx';  
+import RevisionEscenarios from './RevisionEscenarios.tsx';
+import GestionEscenarios from './GestionEscenarios.tsx';
+import PerfilAdmin from './PerfilAdmin.tsx';
+import GestionUsuarios from './GestionUsuarios.tsx';  
 
 type MenuOption = 'revision' | 'escenarios' | 'perfil' | 'usuarios';
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState<MenuOption>('revision');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -83,7 +83,7 @@ export const Dashboard = () => {
       >
         <div className="flex flex-col h-full">
           {/* Header del Sidebar */}
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
@@ -117,7 +117,7 @@ export const Dashboard = () => {
                   }}
                   className={`
                     w-full flex items-start space-x-3 p-4 rounded-xl
-                    transition-all duration-200
+                    transition-all duration-200 cursor-pointer
                     ${isActive 
                       ? 'bg-green-50 border-2 border-green-500 shadow-sm' 
                       : 'hover:bg-gray-50 border-2 border-transparent'
@@ -195,6 +195,8 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+export default Dashboard;
 
 
 

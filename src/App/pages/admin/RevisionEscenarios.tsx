@@ -1,5 +1,4 @@
 // Componentes de contenido para cada sección
-
 import { useEscenarios } from "./hooks/useEscenarios";
 import { useAprobar } from "./hooks/useAprobar";
 import { ModalRevision } from "./components/ModalRevision";
@@ -9,7 +8,6 @@ type ModalState = {
   isOpen: boolean;
   type: 'aprobar' | 'rechazar' | null;
   escenarioId: number | null;
-
 };
 
 type Confirmed = {
@@ -37,13 +35,11 @@ const handleOpenModal = (type: 'aprobar' | 'rechazar', escenarioId: number) => {
     isOpen: true,
     type,
     escenarioId,
- 
-
   });
 };
 
 const handleCloseModal = () => {
-  setModalState({
+  setModalState({                     
     isOpen: false,
     type: null,
     escenarioId: null,
@@ -77,7 +73,7 @@ const handleConfirm = async () => {
 
 return ( 
 <div className="space-y-6">
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+    <div className="bg-white rounded-md p-6 shadow-sm border border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-gray-800">Solicitudes Pendientes</h3>
         <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
@@ -153,3 +149,5 @@ return (
 
   );
 }
+
+export default RevisionEscenarios;
