@@ -1,5 +1,10 @@
 
-export const Navbar = ({text,setText}) =>{
+interface NavbarProps {
+  text: string;
+  setText: (value: string) => void;
+}
+
+export const Navbar = ({text, setText}: NavbarProps) => {
 
 return (
 
