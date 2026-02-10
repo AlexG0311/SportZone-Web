@@ -1,53 +1,9 @@
-import {Routes, Route, Navigate} from 'react-router-dom';
-import Login from './App/pages/auth/Login.tsx';
-import Home from './App/pages/Home.tsx';
+import { RouterProvider } from 'react-router-dom';
+import {router} from './routes/index'
 import './App.css';
-import Detalle from './App/pages/Detalle.tsx';
-import Reservar from './App/pages/Reservar.tsx';
-import MiEscenario from './App/pages/MiEscenario.tsx';
-import EditarEscenario from './App/pages/EditarEscenario.tsx';
-import PanelControl from './App/pages/PanelControl.tsx';
-import Create from './App/pages/CreateEscenario/Create.tsx';
-import { EscenarioProvider } from './App/provider/EscenarioProvider.tsx';
-import DetailEscenario from './App/pages/DetailEscenario.tsx';
-import MisReservas from './App/pages/Mis-Reservas.tsx';
-import Register from './App/pages/auth/Register.tsx';
-import {RevisionEscenarios} from './App/pages/admin/RevisionEscenarios.tsx';
-import { GestionEscenarios } from './App/pages/admin/GestionEscenarios.tsx';
-import {PerfilAdmin} from './App/pages/admin/PerfilAdmin.tsx';
-import {GestionUsuarios} from './App/pages/admin/GestionUsuarios.tsx';
-import { Dashboard } from './App/pages/admin/Dashboard.tsx';
+
 export default function App() {
-  
   return (
-    <Routes>
-
-      <Route path="/" element={<Navigate to="/Home" />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/registro" element={<Register />} />
-      <Route path="/create-account" element={<Create />} />
-      <Route path="/Home" element={<Home />} />
-      <Route path="/detalle/:id" element={<Detalle />} />
-      <Route path="/reservar/:id" element={<Reservar />} />
-      <Route path="/mi-escenario" element={<MiEscenario />} />
-
-      <Route path="/crear-escenario" element={
-        <EscenarioProvider>
-          <Create />
-        </EscenarioProvider>
-      } />
-      <Route path="/editar-escenario/:id" element={<EditarEscenario />} />
-      <Route path="/panel-control/:id" element={<PanelControl />} />
-      <Route path="/detalle-escenario/:id" element={<DetailEscenario />} />
-      <Route path="/mis-reservas" element={<MisReservas />} />
-      <Route path="/admin/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<h1>404 Not Found</h1>} />
-      <Route path="/admin/revision-escenarios" element={<RevisionEscenarios />} />
-      <Route path="/admin/gestion-escenarios" element={<GestionEscenarios />} />
-      <Route path="/admin/perfil-admin" element={<PerfilAdmin />} />
-      <Route path="/admin/gestion-usuarios" element={<GestionUsuarios />} />
-
-    </Routes>
-
+   <RouterProvider router={router}/>
   );
 }
