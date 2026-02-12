@@ -1,312 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MoreVertical, Trash2, Upload, MapPin, Users, DollarSign, ArrowLeft, Star, Plus } from 'lucide-react';
-import type { Escenario, Imagen } from '@/App/types/escenario';
-import { subirImagenACloudinary } from '@/App/services/CloudBinary';
-
-// Componente de imagen con menú de opciones
-function ImageCard({ 
-  imagen, 
-  index, 
-  isMain,
-  onDelete, 
-  onChange
-}: { 
-  imagen: Imagen;
-  index: number;
-  isMain: boolean;
-  onDelete: (id: number) => void;
-  onChange: (id: number, newUrl: string) => void;
-}) {
-  const [showMenu, setShowMenu] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-
-  const handleChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !file.type.startsWith('image/')) return;
-
-    setIsUploading(true);
-    setShowMenu(false);
-
-    try {
-      const newUrl = await subirImagenACloudinary(file);
-      onChange(imagen.id!, newUrl);
-    } catch (error) {
-      console.error('Error al cambiar imagen:', error);
-      alert('Error al cambiar la imagen. Intenta de nuevo.');
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleDelete = () => {
-    if (confirm('¿Estás seguro de eliminar esta imagen?')) {
-      onDelete(imagen.id!);
-      setShowMenu(false);
-    }
-  };
-
-  return (
-    <div className={`relative group rounded-xl overflow-hidden border-2 transition-all ${
-      isMain ? 'border-yellow-500 ring-2 ring-yellow-500' : 'border-gray-200 hover:border-blue-400'
-    }`}>
-      <img
-        src={imagen.url}
-        alt={imagen.descripcion}
-        className={`w-full object-cover ${isMain ? 'h-96' : 'h-56'}`}
-      />
-
-      {/* Loading overlay */}
-      {isUploading && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin" />
-        </div>
-      )}
-
-      {/* Badge principal */}
-      {isMain && (
-        <div className="absolute top-4 left-4 px-3 py-1.5 bg-yellow-500 text-white text-sm font-semibold rounded-lg flex items-center gap-2 shadow-lg">
-          <Star className="w-4 h-4 fill-white" />
-          Imagen Principal
-        </div>
-      )}
-
-      {/* Badge de orden */}
-      <div className="absolute top-4 right-16 px-2 py-1 bg-black/60 text-white text-xs font-semibold rounded-lg">
-        #{index + 1}
-      </div>
-
-      {/* Menú de opciones */}
-      {!isUploading && (
-        <div className="absolute top-4 right-4">
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="p-2 bg-white/90 hover:bg-white rounded-lg shadow-lg transition-all"
-          >
-            <MoreVertical className="w-5 h-5 text-gray-700" />
-          </button>
-
-          {/* Dropdown menu */}
-          {showMenu && (
-            <>
-              {/* Backdrop para cerrar el menú */}
-              <div 
-                className="fixed inset-0 z-10" 
-                onClick={() => setShowMenu(false)}
-              />
-              
-              <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-20">
-               
-                
-                <label className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer transition-colors">
-                  <Upload className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-gray-700">Cambiar imagen</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleChangeImage}
-                    className="hidden"
-                  />
-                </label>
-                
-                <button
-                  onClick={handleDelete}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors"
-                >
-                  <Trash2 className="w-4 h-4 text-red-600" />
-                  <span className="text-sm font-medium text-red-600">Eliminar imagen</span>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Componente para agregar nueva imagen
-function AddImageCard({ 
-  onAdd, 
-  isUploading,
-  label = "Agregar imagen"
-}: { 
-  onAdd: (file: File) => void;
-  isUploading: boolean;
-  label?: string;
-}) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      onAdd(file);
-    }
-  };
-
-  return (
-    <div className="relative group">
-      <button
-        type="button"
-        onClick={() => fileInputRef.current?.click()}
-        disabled={isUploading}
-        className="w-full h-56 border-2 border-dashed border-gray-300 bg-gray-50 rounded-xl hover:border-blue-400 hover:bg-blue-50 flex flex-col items-center justify-center gap-3 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isUploading ? (
-          <>
-            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm font-medium text-gray-600">Subiendo...</span>
-          </>
-        ) : (
-          <>
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <Plus className="w-6 h-6 text-blue-600" />
-            </div>
-            <span className="text-sm font-medium text-gray-600">{label}</span>
-          </>
-        )}
-      </button>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="hidden"
-      />
-    </div>
-  );
-}
+import { MapPin, Users, DollarSign, ArrowLeft } from 'lucide-react';
+import { useGetEscenarioById } from '../hooks/useGetEscenarioById';
+import AddImageCard from '../components/AddImageCard';
+import { useHandleDeleteImage } from '../hooks/useHandleDeleteImage';
+import { useHandleChangeImage } from '../hooks/useHandleChangeImage';
+import ImageCard from '../components/ImageCard';
 
 export default function DetailEscenario() {
+ 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [escenario, setEscenario] = useState<Escenario | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [uploadingImage, setUploadingImage] = useState(false);
-
-  useEffect(() => {
-    const fetchEscenario = async () => {
-      try {
-        const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`, {
-          credentials: 'include'
-        });
-
-        if (!response.ok) throw new Error('Error al cargar el escenario');
-
-        const data = await response.json();
-        setEscenario(data);
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al cargar el escenario');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEscenario();
-  }, [id]);
-
-  const handleDeleteImage = async (imagenId: number) => {
-    if (!escenario) return;
-
-    try {
-      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/imagen/${imagenId}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-
-      if (!response.ok) throw new Error('Error al eliminar imagen');
-
-      // Actualizar estado local
-      setEscenario({
-        ...escenario,
-        imagenes: escenario.imagenes.filter(img => img.id !== imagenId)
-      });
-
-      alert('Imagen eliminada exitosamente');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al eliminar la imagen');
-    }
-  };
-
-  const handleChangeImage = async (imagenId: number, newUrl: string) => {
-    if (!escenario) return;
-
-    try {
-      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/imagen/${imagenId}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ url: newUrl })
-      });
-
-      if (!response.ok) throw new Error('Error al actualizar imagen');
-
-      // Actualizar estado local
-      setEscenario({
-        ...escenario,
-        imagenes: escenario.imagenes.map(img => 
-          img.id === imagenId ? { ...img, url: newUrl } : img
-        )
-      });
-
-      alert('Imagen actualizada exitosamente');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al actualizar la imagen');
-    }
-  };
-
-  const handleAddImage = async (file: File) => {
-    if (!escenario) return;
-
-    setUploadingImage(true);
-
-    try {
-      // Subir a Cloudinary
-      const url = await subirImagenACloudinary(file);
-
-      // Determinar el orden (siguiente número disponible)
-      const maxOrden = escenario.imagenes.length > 0 
-        ? Math.max(...escenario.imagenes.map(img => img.orden))
-        : -1;
-      const nuevoOrden = maxOrden + 1;
-
-      // Guardar en base de datos
-      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}/imagen`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          url,
-          descripcion: `Imagen ${nuevoOrden + 1}`,
-          orden: nuevoOrden
-        })
-      });
-
-      if (!response.ok) throw new Error('Error al agregar imagen');
-
-      const nuevaImagen = await response.json();
-
-      // Actualizar estado local
-      setEscenario({
-        ...escenario,
-        imagenes: [...escenario.imagenes, nuevaImagen]
-      });
-
-      alert('Imagen agregada exitosamente');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al agregar la imagen');
-    } finally {
-      setUploadingImage(false);
-    }
-  };
+  const {escenario, loading} = useGetEscenarioById(id);
 
   if (loading) {
     return (
@@ -329,7 +33,6 @@ export default function DetailEscenario() {
       </div>
     );
   }
-
   const imagenesOrdenadas = [...escenario.imagenes].sort((a, b) => a.orden - b.orden);
   const imagenPrincipal = imagenesOrdenadas[0];
   const imagenesAdicionales = imagenesOrdenadas.slice(1);
@@ -361,14 +64,14 @@ export default function DetailEscenario() {
                 imagen={imagenPrincipal}
                 index={0}
                 isMain={true}
-                onDelete={handleDeleteImage}
-                onChange={handleChangeImage}
+                onDelete={useHandleDeleteImage}
+                onChange={useHandleChangeImage}
               />
             ) : (
               <AddImageCard
-                onAdd={handleAddImage}
-                isUploading={uploadingImage}
                 label="Agregar imagen principal"
+                escenarioId={id}
+                escenario={escenario}
               />
             )}
           </div>
@@ -481,17 +184,17 @@ export default function DetailEscenario() {
                 imagen={imagen}
                 index={index + 1}
                 isMain={false}
-                onDelete={handleDeleteImage}
-                onChange={handleChangeImage}
+                onDelete={useHandleDeleteImage}
+                onChange={useHandleChangeImage}
               />
             ))}
 
             {/* Botón para agregar más imágenes */}
             {puedeAgregarMas && (
               <AddImageCard
-                onAdd={handleAddImage}
-                isUploading={uploadingImage}
                 label="Agregar imagen"
+                escenarioId={id}
+                escenario={escenario}
               />
             )}
           </div>

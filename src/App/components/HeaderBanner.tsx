@@ -49,7 +49,7 @@ export const HeaderBanner = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             className="relative flex items-center h-60 rounded-b-lg bg-white cursor-pointer 
-         bg-[url(https://imgs.search.brave.com/sUNza5V9E8uZqNlfxJ_G4zJRaTUSOx4ScdhUwWczu3g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvMTky/MHgxMDgwLWhkLW5h/dHVyZS1yZWQtZm9y/ZXN0LThyNmU1M3By/YXRwczNqNjUuanBn)]">
+            bg-[url(https://imgs.search.brave.com/sUNza5V9E8uZqNlfxJ_G4zJRaTUSOx4ScdhUwWczu3g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvMTky/MHgxMDgwLWhkLW5h/dHVyZS1yZWQtZm9y/ZXN0LThyNmU1M3By/YXRwczNqNjUuanBn)]">
             {/* Overlay con efecto hover */}
             <div className={`absolute inset-0 ${isHovering ? 'bg-black/30' : 'bg-black/0'} transition-colors duration-300 rounded-b-lg pointer-events-none`}></div>
             <div
