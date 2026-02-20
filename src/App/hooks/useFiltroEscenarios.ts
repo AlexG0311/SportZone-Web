@@ -2,7 +2,7 @@ import { useEscenariosAprobados } from "./useEscenariosAprobados";
 import { useState } from "react";
 export const useFiltroEscenario = () => {
   const [busqueda, setBusqueda] = useState("");
-  const { escenarios} = useEscenariosAprobados();
+  const { escenarios, loading} = useEscenariosAprobados();
   const [priceMin, setPrice] = useState(0);
   const [tipo, setTipo] = useState("");
   const [capacity, setCapacity] = useState(0);
@@ -28,5 +28,5 @@ export const useFiltroEscenario = () => {
 
   console.log(escenariosFiltrados);
 
-  return { escenariosFiltrados, busqueda, setBusqueda, setPrice, setTipo, tipo, setCapacity, capacity};
+  return { escenariosFiltrados, busqueda,loading,setBusqueda, setPrice, setTipo, tipo, setCapacity, capacity};
 };

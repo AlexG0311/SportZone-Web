@@ -3,7 +3,7 @@ import {useFiltroEscenario}  from "@/App/hooks/useFiltroEscenarios";
 import {Navbar} from "./components/Navbar";
 
 const GestionEscenarios = () => {
-const {escenariosFiltrados, loading, busqueda, setBusqueda} = useFiltroEscenario();
+const {escenariosFiltrados, busqueda,loading, setBusqueda} = useFiltroEscenario();
 
   return(
   <div className="space-y-0">
