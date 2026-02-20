@@ -2,9 +2,9 @@ import { useState } from "react";
 import { PropsModal } from "../types/modal"
 import { handleFileChangePerfil } from "../utils/handleFileChangePerfil"
 import { useAuth } from "../hooks/useAuth";
-import { AddImgBanner } from "../services/AddImgBanner";
+import { AddImgPerfil } from "../services/AddImgPerfil";
 
-export const ModalAddBanner = ({isOpen, onClose}:PropsModal ) => {
+export const ModalAddPerfil = ({isOpen, onClose}:PropsModal ) => {
 const [url, setUrl] = useState<string | null>(null);
 const [isLoading, setIsLoading] = useState(false);
 const { usuario } = useAuth();
@@ -24,10 +24,10 @@ const handleSave = async () => {
   
   try {
     setIsLoading(true);
-    await AddImgBanner(usuario.id, url);
+    await AddImgPerfil(usuario.id, url);
     onClose();
   } catch (error) {
-    console.error('Error al guardar banner:', error);
+    console.error('Error al guardar perfil:', error);
   } finally {
     setIsLoading(false);
   }
@@ -42,7 +42,7 @@ return (
       onClick={onClose}/>
 
     <div className="flex flex-col items-center gap-5 justify-center relative bg-white rounded-xl p-6 shadow-xl max-w-md w-full mx-4 z-10">
-    <h1 className="font-bold">Elige una foto para tu banner</h1>
+    <h1 className="font-bold">Elige una foto de Perfil</h1>
     
     <input 
       id="file-upload"
