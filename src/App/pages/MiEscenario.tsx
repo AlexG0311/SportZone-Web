@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom"
 import CardEscenario from "../components/CardEscenario";
 import { useGetEscenarioUser } from "../hooks/useGetEscenarioUser";
+import { Loading } from "../components/Loading";
 export default function MiEscenario() {
 
 const {loading, escenarios} = useGetEscenarioUser();
 const navigate = useNavigate();
 
+const texto: string = "Cargando escenario..."
+
   if(loading){
     return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16 mb-4 mx-auto"></div>
-          <h2 className="text-xl font-semibold">Cargando tus escenarios...</h2>
-        </div>
-      </div>
+    <Loading
+    text={texto}
+    />
     );
   }
   

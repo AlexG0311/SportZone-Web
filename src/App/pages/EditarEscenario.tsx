@@ -1,24 +1,27 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import NavBar from "../components/NavBar";
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from "../hooks/useAuth";
 
 // Fix para el icono del marcador en Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
 // Componente para manejar clics en el mapa
-function LocationMarker({ 
-  position, 
-  setPosition 
-}: { 
+function LocationMarker({
+  position,
+  setPosition,
+}: {
   position: [number, number] | null;
   setPosition: (pos: [number, number]) => void;
 }) {
@@ -28,15 +31,12 @@ function LocationMarker({
     },
   });
 
-  return position === null ? null : (
-    <Marker position={position}>
-    </Marker>
-  );
+  return position === null ? null : <Marker position={position}></Marker>;
 }
 
 interface FormData {
   nombre: string;
-  tipo: 'Público' | 'Privado';
+  tipo: "Público" | "Privado";
   descripcion: string;
   direccion: string;
   latitud: string;
@@ -53,14 +53,14 @@ export default function EditarEscenario() {
   const { id } = useParams<{ id: string }>();
 
   const [formData, setFormData] = useState<FormData>({
-    nombre: '',
-    tipo: 'Público',
-    descripcion: '',
-    direccion: '',
-    latitud: '',
-    longitud: '',
-    precio: '',
-    capacidad: '',
+    nombre: "",
+    tipo: "Público",
+    descripcion: "",
+    direccion: "",
+    latitud: "",
+    longitud: "",
+    precio: "",
+    capacidad: "",
     imagenUrl: null,
     estadoId: 1,
   });
@@ -75,44 +75,50 @@ export default function EditarEscenario() {
   useEffect(() => {
     const cargarEscenario = async () => {
       if (!id) {
-        navigate('/mis-escenarios');
+        navigate("/mis-escenarios");
         return;
       }
 
       try {
-        const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`, {
-          credentials: 'include',
-        });
+        const response = await fetch(
+          `https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`,
+          {
+            credentials: "include",
+          },
+        );
 
         if (!response.ok) {
-          throw new Error('No se pudo cargar el escenario');
+          throw new Error("No se pudo cargar el escenario");
         }
 
         const escenario = await response.json();
 
         setFormData({
-          nombre: escenario.nombre || '',
-          tipo: escenario.tipo || 'Público',
-          descripcion: escenario.descripcion || '',
-          direccion: escenario.direccion || '',
-          latitud: escenario.latitud ? escenario.latitud.toString() : '',
-          longitud: escenario.longitud ? escenario.longitud.toString() : '',
-          precio: escenario.precio ? escenario.precio.toString() : '',
-          capacidad: escenario.capacidad ? escenario.capacidad.toString() : '',
+          nombre: escenario.nombre || "",
+          tipo: escenario.tipo || "Público",
+          descripcion: escenario.descripcion || "",
+          direccion: escenario.direccion || "",
+          latitud: escenario.latitud ? escenario.latitud.toString() : "",
+          longitud: escenario.longitud ? escenario.longitud.toString() : "",
+          precio: escenario.precio ? escenario.precio.toString() : "",
+          capacidad: escenario.capacidad ? escenario.capacidad.toString() : "",
           imagenUrl: escenario.imagenUrl || null,
           estadoId: escenario.estadoId || 1,
         });
 
         // Establecer posición en el mapa
         if (escenario.latitud && escenario.longitud) {
-          setPosition([parseFloat(escenario.latitud), parseFloat(escenario.longitud)]);
+          setPosition([
+            parseFloat(escenario.latitud),
+            parseFloat(escenario.longitud),
+          ]);
         }
 
         setLoadingData(false);
       } catch (error) {
-        console.error('Error al cargar escenario:', error);
-        alert('Error al cargar los datos del escenario');
-        navigate('/mis-escenarios');
+        console.error("Error al cargar escenario:", error);
+        alert("Error al cargar los datos del escenario");
+        navigate("/mis-escenarios");
       }
     };
 
@@ -122,34 +128,40 @@ export default function EditarEscenario() {
   // Actualizar coordenadas cuando cambia la posición en el mapa
   useEffect(() => {
     if (position) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         latitud: position[0].toFixed(8),
-        longitud: position[1].toFixed(8)
+        longitud: position[1].toFixed(8),
       }));
     }
   }, [position]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   // Actualizar posición del mapa cuando se escriben coordenadas
   const handleCoordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     // Actualizar mapa si ambas coordenadas son válidas
-    const lat = name === 'latitud' ? parseFloat(value) : parseFloat(formData.latitud);
-    const lng = name === 'longitud' ? parseFloat(value) : parseFloat(formData.longitud);
+    const lat =
+      name === "latitud" ? parseFloat(value) : parseFloat(formData.latitud);
+    const lng =
+      name === "longitud" ? parseFloat(value) : parseFloat(formData.longitud);
 
     if (!isNaN(lat) && !isNaN(lng)) {
       setPosition([lat, lng]);
@@ -158,9 +170,9 @@ export default function EditarEscenario() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.nombre || !formData.direccion || !formData.precio) {
-      alert('Por favor completa todos los campos obligatorios');
+      alert("Por favor completa todos los campos obligatorios");
       return;
     }
 
@@ -178,28 +190,33 @@ export default function EditarEscenario() {
         capacidad: formData.capacidad ? parseInt(formData.capacidad) : null,
         imagenUrl: formData.imagenUrl,
         estadoId: formData.estadoId,
-        encargadoId: usuario ? usuario.id : null
+        encargadoId: usuario ? usuario.id : null,
       };
 
-      const response = await fetch(`https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `https://${import.meta.env.VITE_SERVER_IP}/api/escenario/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(payload),
         },
-        credentials: 'include',
-        body: JSON.stringify(payload),
-      });
+      );
 
       if (response.ok) {
-        alert('✅ Escenario actualizado exitosamente');
-        navigate('/mi-escenario');
+        alert("✅ Escenario actualizado exitosamente");
+        navigate("/mi-escenario");
       } else {
         const error = await response.json();
-        alert(`❌ Error: ${error.message || 'No se pudo actualizar el escenario'}`);
+        alert(
+          `❌ Error: ${error.message || "No se pudo actualizar el escenario"}`,
+        );
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('❌ Error al actualizar el escenario');
+      console.error("Error:", error);
+      alert("❌ Error al actualizar el escenario");
     } finally {
       setLoading(false);
     }
@@ -221,8 +238,6 @@ export default function EditarEscenario() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <NavBar />
-
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header */}
@@ -231,28 +246,45 @@ export default function EditarEscenario() {
               onClick={() => navigate(-1)}
               className="flex items-center text-gray-600 hover:text-gray-900 mb-4 transition-colors"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               Volver
             </button>
-            <h1 className="text-3xl font-bold text-gray-900">Editar Escenario</h1>
-            <p className="text-gray-600 mt-2">Modifica la información del escenario</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Editar Escenario
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Modifica la información del escenario
+            </p>
           </div>
 
           {/* Layout: Formulario + Mapa */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
               {/* Columna Izquierda - Formulario */}
               <div className="space-y-6">
-                
                 {/* Información Básica */}
                 <div className="bg-white rounded-2xl shadow-sm p-6 space-y-4">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Información Básica</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                    Información Básica
+                  </h2>
 
                   <div>
-                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="nombre"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Nombre del Escenario *
                     </label>
                     <input
@@ -268,7 +300,10 @@ export default function EditarEscenario() {
                   </div>
 
                   <div>
-                    <label htmlFor="tipo" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="tipo"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Tipo *
                     </label>
                     <select
@@ -285,7 +320,10 @@ export default function EditarEscenario() {
                   </div>
 
                   <div>
-                    <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="descripcion"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Descripción *
                     </label>
                     <textarea
@@ -302,7 +340,10 @@ export default function EditarEscenario() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="capacidad" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label
+                        htmlFor="capacidad"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
                         Capacidad *
                       </label>
                       <input
@@ -319,11 +360,16 @@ export default function EditarEscenario() {
                     </div>
 
                     <div>
-                      <label htmlFor="precio" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label
+                        htmlFor="precio"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
                         Precio/Hora *
                       </label>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                          $
+                        </span>
                         <input
                           type="number"
                           id="precio"
@@ -341,7 +387,10 @@ export default function EditarEscenario() {
                   </div>
 
                   <div>
-                    <label htmlFor="estadoId" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="estadoId"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Estado *
                     </label>
                     <select
@@ -361,10 +410,15 @@ export default function EditarEscenario() {
 
                 {/* Ubicación */}
                 <div className="bg-white rounded-2xl shadow-sm p-6 space-y-4">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Ubicación</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                    Ubicación
+                  </h2>
 
                   <div>
-                    <label htmlFor="direccion" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="direccion"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Dirección *
                     </label>
                     <input
@@ -381,7 +435,10 @@ export default function EditarEscenario() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="latitud" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label
+                        htmlFor="latitud"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
                         Latitud *
                       </label>
                       <input
@@ -398,7 +455,10 @@ export default function EditarEscenario() {
                     </div>
 
                     <div>
-                      <label htmlFor="longitud" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label
+                        htmlFor="longitud"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
                         Longitud *
                       </label>
                       <input
@@ -421,27 +481,33 @@ export default function EditarEscenario() {
                     </p>
                   </div>
                 </div>
-
               </div>
 
               {/* Columna Derecha - Mapa */}
               <div className="lg:sticky lg:top-4 h-fit">
                 <div className="bg-white rounded-2xl shadow-sm p-6">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Ubicación en el Mapa</h2>
-                  
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                    Ubicación en el Mapa
+                  </h2>
+
                   <div className="rounded-xl overflow-hidden border-2 border-gray-200 h-[600px]">
                     <MapContainer
                       center={position || defaultPosition}
                       zoom={13}
                       scrollWheelZoom={true}
                       className="h-full w-full"
-                      key={position ? `${position[0]}-${position[1]}` : 'default'}
+                      key={
+                        position ? `${position[0]}-${position[1]}` : "default"
+                      }
                     >
                       <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       />
-                      <LocationMarker position={position} setPosition={setPosition} />
+                      <LocationMarker
+                        position={position}
+                        setPosition={setPosition}
+                      />
                     </MapContainer>
                   </div>
 
@@ -451,13 +517,13 @@ export default function EditarEscenario() {
                         📍 Ubicación seleccionada:
                       </p>
                       <p className="text-xs text-green-700 mt-1">
-                        Lat: {position[0].toFixed(6)} | Lng: {position[1].toFixed(6)}
+                        Lat: {position[0].toFixed(6)} | Lng:{" "}
+                        {position[1].toFixed(6)}
                       </p>
                     </div>
                   )}
                 </div>
               </div>
-
             </div>
 
             {/* Botones de acción */}
@@ -474,7 +540,7 @@ export default function EditarEscenario() {
                 disabled={loading}
                 className="flex-1 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors shadow-lg hover:shadow-xl"
               >
-                {loading ? 'Actualizando...' : 'Actualizar Escenario'}
+                {loading ? "Actualizando..." : "Actualizar Escenario"}
               </button>
             </div>
           </form>

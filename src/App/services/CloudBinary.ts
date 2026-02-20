@@ -1,10 +1,12 @@
 export const subirImagenACloudinary = async (file: File): Promise<string> => {
   try {
-    
     const formData = new FormData();
-    
+
     formData.append("file", file);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    formData.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+    );
     formData.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
 
     const response = await fetch(
@@ -12,16 +14,14 @@ export const subirImagenACloudinary = async (file: File): Promise<string> => {
       {
         method: "POST",
         body: formData,
-      }
+      },
     );
 
     const result = await response.json();
 
     return result.secure_url; // URL segura de la imagen en Cloudinary
-
-
   } catch (error) {
-    console.error('Error uploading to Cloudinary:', error);
+    console.error("Error uploading to Cloudinary:", error);
     throw error;
   }
 };

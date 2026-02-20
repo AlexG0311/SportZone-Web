@@ -16,7 +16,6 @@ interface AuthContextType {
   checkAuth: () => Promise<void>;
 }
 
-// ✅ Sin export, solo para uso interno
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 

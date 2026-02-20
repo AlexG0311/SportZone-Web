@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import { FiltroProvider } from '@/App/provider/FiltroProvider';
 
 // Layouts
 import MainLayout from '../layout/MainLayout';
@@ -88,9 +89,12 @@ export const router = createBrowserRouter([
       {
         path: 'home',
         element: (
-          <SuspenseWrapper>
+        <FiltroProvider>
+         <SuspenseWrapper>
             <Home />
           </SuspenseWrapper>
+        </FiltroProvider>
+     
         ),
       },
       {
