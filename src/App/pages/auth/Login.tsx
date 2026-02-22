@@ -276,7 +276,7 @@ useEffect(() => {
               <p className="text-sm text-gray-600">
                 ¿No tienes una cuenta? {' '}
                 <a 
-                  href="/registro" 
+                  href="/auth/register" 
                   className="text-green-600 hover:text-green-700 font-bold hover:underline"
                 >
                   Regístrate aquí
