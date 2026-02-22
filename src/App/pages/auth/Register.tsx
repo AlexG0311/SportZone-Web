@@ -92,7 +92,7 @@ export default function Register() {
           "¡Registro Exitoso!\n\n" +
           "Tu cuenta ha sido creada correctamente. Ahora puedes iniciar sesión."
         );
-        navigate("/login");
+        navigate("/auth/login");
       } else {
         const errorData = await response.json();
         setError(errorData.message || "No se pudo crear la cuenta");
@@ -355,7 +355,7 @@ export default function Register() {
               <p className="text-sm text-gray-600">
                 ¿Ya tienes una cuenta? {' '}
                 <a 
-                  href="/login" 
+                  href="/auth/login" 
                   className="text-green-600 hover:text-green-700 font-bold hover:underline"
                 >
                   Inicia sesión aquí
